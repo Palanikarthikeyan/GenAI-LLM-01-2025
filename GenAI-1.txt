@@ -1,0 +1,492 @@
+AI
+---
+ |->General Programming 		Vs  ML 
+    -------------------
+ User ->Input ->[system] ->output   User -> i/p & o/p [system] -> model
+ 
+ ML ->Data -> text(A-Za-z0-9),image,sounds 
+
+ model ->(algorithm - mathematical)
+ |
+ Testing 
+ |
+ prediction 
+
+ Supervised -> Classification and Regression
+		
+ Unsupervised ->Clustering 
+
+ Reinforcement --> Agent ->reward points 
+
+
+Deep Learning
+-------------
+ -> brain ->neual network
+  
+    Convolution Neural network (CNN) - image classification 
+    Recurrent Neural network (RNN) - timeseries ,speech 
+    Generative Adversarial Networks (GANs) - synthetic data
+
+ML - data set - CPU  - small
+DL - huge data - GPU  - large
+|
+
+
+ML ->DL ->GenAI 
+	   |
+	 Generate new data(image,text,audio,video)
+
+ Large Language Model (LLMs)
+ --------------------------------
+ |->NLP 
+      |-> text ->vector
+
+  Google Translate, 
+  Search ->Text ->[Text,Image,Video]
+		   
+#######################################################################################
+    SuperMarkert - Billing Software - 2000 ->Desktop Application
+ +------------------+
+  |->list of items 
+  |->billing ...          +  [trained model]  
+  |->stock		      |---> load data (wiki,discount,.. credit points,maps)						|						
+  |->customer				customer :[ ]
++-------------------+
+
+	person UserA:  - read set of 1000 books about list of dogs + 500 books +..
+		|		     ----------
+		|________________________|
+		
+	Question -> [  UserA  ] ->Answer
+
+######################################################################################
+Natural Language Processing (NLP)
+----------------------------------
+  |->Text => Vector [10100101]
+
+Hello	        ....
+|		
+English   -> <anotherLanguage>
+
+(step 6)		    BERT
+			     |
+(STEP 5)		    transformer  
+			     |
+(STEP 4)		    RNN, word embedding
+			     |
+(STEP 3)  Text processing3  word2vector ..
+			    ---------------------------
+(STEP 2:) Text processing2  oneHot,Bow,TF-IDF,ngrams...
+ 			    -----------------------------
+(STEP 1:) Text Processing1 - Tokenization ,Stemming, Lemmatization
+			    -----------------------------
+----------------------------------------------------------------------------
+NLP term	
+corpus - paragraph 
+documents - sentence
+vocabulary - unique words - present in the paragraph
+words - all the words present in corpus
+------ 
+
+"My name is Karthik and i have a interst in teaching ML,NLP and DL. I am a code er"
+|____________________________________________________________________________________|
+   |->Corpus
+
+S1 = My name is Karthik and i have a interst in teaching ML,NLP and DL  
+S2 = I am a code er
+------------------------------------------------------------//documents
+|
+My
+name 
+is 
+Karthik 
+and
+..
+|
+
+[ I likes to drink apple juice. my friend like mango juice] //corpus
+                                 
+S1= I likes to drink apple juice
+S2= my friend like mango juice
+
+I 
+likes
+to 
+drink
+..
+unique words
+-------------
+I likes to drink apple juice my friend like mango = 10
+-------------------------------------------------------------------
+
+Unique words:
+-------------
+perl and python programming  = 4
+
+perl  =>	1 0 0 0
+and   =>        0 1 0 0
+python =>       0 0 1 0
+programming =>  0 0 0 1
+
+--------------------------------------------------------------------------
+
+Tokenization:
+ |->process -> text into smaller units(token)
+ 
+ Stemming
+-------------
+  |->reduce the words (ex: programming ->program)
+     			   -----------   -------
+ root word -> programming   => program //stem
+history ->histori 
+		//meaning less
+ lemmatization
+ -------------
+    |->context value
+  
+ stem ->[ lemmatization] -> lemma
+  |
+ good                    -> better  
+=============================================================
+python programming - Hands on 
+-------------------
+download python from python.org  -> python => cpython - default GIL enabled 
+GIL is mutex  
+
+a = 10 
+b = 5+5
+c = 4+6          ( 10 ) 0x1234
+
+print(hex(id(10)))  -> 0x1234
+print(hex(id(a)))   -> 0x1234
+print(hex(id(b)))   -> 0x1234
+print(hex(id(c)))   -> 0x1234
+
+ipython
+jython
+---------------//GIL is disabled 
+|
+ipython 
+-----------------------------------------------------------------------------------
+
+lemmatizion  - pos(post tag)
+|
+Noun - n
+verb - v
+adjective - a
+adverb -r
+
+=========================================================================
+#Task: Stemming and Lemitization
+#---------------------------------
+paragraph = """Vikram Ambalal Sarabhai was one of the greatest scientists of India. He is widely regarded as the father of the Indian space programme. In fact he was a rare combination of a scientist, an innovator, industrialist and a visionary.
+
+Vikram Sarabhai was born on August 12, 1919 at Ahmedabad in an affluent family of progressive industrialists. He was one of the eight children of Ambalal and Sarla Devi. He had his early education in a private school, 'Retreat', run by his parents on Montessori lines. Some of the great personalities like Gurudev Rabindranath, J Krishna Murthi, Motilal Nehru, VS Shrinivasa Shastri, Jawaharlal Nehru, Sarojini Naidu, Maulana Azad, CF Andrews, C V Raman et al used to stay with the Sarabhai family when they visited Ahmedabad. Mahatma Gandhi also once stayed at their house while recovering from an illness. Visits by such great personalities greatly influenced Vikram Sarabhai.
+
+After his matriculation, Vikram Sarabhai proceeded to Cambridge for his college education and took the tripos in Natural Sciences from St. John's College in 1940. With the beginning of World War II, he returned home and joined as a research scholar under Sir CV Raman at the Indian Institute of Science, Bangalore. His interest in solar physics and cosmic ray led him to set up many observation stations around the country. He built the necessary equipment and took measurements at Bangalore, Pune and the Himalayas. He returned to Cambridge in 1945 and completed his PhD in 1947."""
+
+# Convert Copus ->documents
+sentences = nltk.sent_tokenize(paragraph)
+
+print(type(sentences),len(sentences))
+
+from nltk.stem import SnowballStemmer
+snowballstemmer = SnowballStemmer('english')
+
+# Apply stopwords ->snowball stemming
+for v in range(len(sentences)):
+    words = nltk.word_tokenize(sentences[v])
+    words = [snowballstemmer.stem(word) for word in words if word not in set(stopwords.words('english'))]
+    sentences[v]=' '.join(words)
+
+
+print(sentences)
+
+
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+for var in range(len(sentences)):
+    sentences[v]=sentences[v].lower()
+    words = nltk.word_tokenize(sentences[v])
+    words = [lemmatizer.lemmatize(word,pos='v')for word in words]
+    sentences[v]=' '.join(words)
+
+print("After lemitization:")
+print(sentences)
+----------------------------------------------------------------------
+Named Entity Recognition
+----------------------------
+To get pos_tag
+-----------------
+nltk.pos_tag(<word>)
+
+ 
+s1="vikram ambal sarabhai one greatest scientist india"
+words = nltk.word_tokenize(s1)
+tag_elements = nltk.pos_tag(words)
+print(tag_elements)
+
+nltk.ne_chunk(tag_elements).draw()
+
+#######################################################################################
+(STEP 2:) Text processing2
+----------------------------
+
+One-Hot Encoding
+----------------
+|-> token - word/text => vector
+
+Corpus ->documents ->words ->unique word
+			     ............
+
+S1 The food is good 
+S2 The food is bad
+--------------------
+unique words ---> The food is good  bad 
+|
+after apply stops words and convert to lowercase 
+---------------------------------------------------
+ |-> the food good bad ok -> count = 5
+
+the  ==>    1 0 0 0 0
+food ==>    0 1 0 0 0
+good ==>    0 0 1 0 0
+bad  ==>    0 0 0 1 0
+ok   ==>    0 0 0 0 1
+	   ----------//vector
+
+
+Bow
+----
+S1: good book
+S2: good notes
+S3: book notes good
+
+voc: good book notes ->c=3
+
+voc   - frequency 
+----    ----------
+good     3
+book     2
+notes    2
+...............................
+
+food is not good
+
+S1 => food good
+S2 => food not good
+
+
+[food good   food not good]
+
+ 1  0
+ 0  1
+-----------------------------------------------------------------------
+
+S1  The food is good
+S2  The food is not good
+
+voc:  The food is not good
+|
+after apply stop words
+|
+	food	not 	good
+	
+S1	1	0	1  
+S2	1	1	1  
+	-------------------//
+	  	meaning is different ?
+
+
+#######
+ngrams
+|
+|->1 unigrams
+|->2 bigrams
+|->3 trigrams
+|->4 and above ... High order grams
+
+
+TF-IDF  
+-------
+TF ->Term Frequency 
+
+             No.of repetition of words in sentence
+TF = 	       ----------------------------------
+		   No.of words in sentence 
+
+
+S1: good book		---> Total no.of words = 2
+S2: good notes	        ---> Total no.of words = 2
+S3: book notes good     ---> Total no.of words = 3
+
+
+	S1	S2	S3
+
+good	1/2      1/2     1/3
+
+book    1/2      0/2=0    1/3
+
+notes    0         1/2    1/3
+
+
+IDF
+---
+Inverse Document Frequency
+ 		
+IDF = log   (    No.of sentences		)
+         e	-----------------
+		  No.of sentences contains word)
+
+	
+good	log    ( 3/3) => loge(1) => 0
+           e
+book    log    (3/2) =>
+           e
+notes   log    (3/2) =>
+           e
+
+Vector => TF * IDF
+
+	good		book			notes
+	
+S1   [    1/2 * 0	1/2 * log (3/2)		0 * log (3/2) =>0 ]
+				 e                     e
+
+S2   [     0            0                     1/2 * log (3/2) ]
+                                                       e
+S3   [     0           1/3 * log(3/2)            1/3 * log(3/2)  ]
+                                e                         e
+	|________________________________________________________|
+			|
+			vector
+
+
+S1 => i learn python programming
+s2 => i learn java programming
+
+learn -> 1/4
+-----------------------------------------------------------------------------------------
+ word embedding
+ _____________
+  |->Countable frequency (or) counter (or) count
+	|->oneHot,Bow,TF-IDF 
+
+ 
+  |->DeepLearning Training model
+	|->word2vector
+		|--->continuous bag of words - CBOW
+		|--->skipgrams 
+
+	the ->[100000]
+
+	[word1]	[word2] [word3]
+  f1
+  f2
+  ..
+  300 
+	   Boy  Girl  King  Queen ..
+ Gender     1    -1    1     -1
+
+ Royal     0.6        0.94
+  ..
+ 300
+
+  Happy		[ 101001] .	
+  excited	[ 101001] .
+			  |
+  sad		[ 01001]  .
+
+ 
+cosine similarity
+--------------------
+		
+ gender |  .boy
+	|   .king
+	|
+	-----------
+
+d= 1 - cosine 
+	|            
+	coso ->cos(45o) => 0.7071
+
+	=1-0.7071
+	=0.29
+
+ d= 1 - cos90
+  = 1-0 =>1
+  = 1
+
+          movie1 movie2 movie3  <== vector - vocabulary
+ action | *
+ comedy |
+ cosmic |         * * 
+ |      ------------*-----
+ |
+ features
+----------------------------------------------------------------------------
+
+How word2vector model is created ?
+    -----------
+ CBOW
+
+window size 
+|
+ winsize = N 
+
+[ xyz organization is related to deep learning ]
+
+winsize = 5
+
+[ xyz organization is related to deep learning ]
+  -------------------------------
+	|
+ xyz organization is related to
+		  ---
+		   |<== select middle value
+
+ xyz organization is related to
+		  ---
+
+Input: xyz organization related to 
+
+[ xyz organization is related to deep learning ]
+       -------------------------------
+		  |
+	organization is related to deep
+			--------
+		
+       Input: organization is to deep
+	
+
+Input					  Output
+-----> xyz organization related to  	    is
+-----> organization is to deep		    related 
+...
+
+ c=7
+
+xyz 	     [ 1 0 0 0 0 0 0 ]
+organization [ 0 1 0 0 0 0 0 ]
+		..
+cbow
+-----
+Input				
+xyz 		    Hidden		output
+1                  | 0 |		0
+0		   | 0 |		0
+0		   | 0 |		1
+0		   | 0 |		0
+0		   | 0 |		0
+0		      			0
+0
+
+organization
+0
+1
+0
+0
+0
+0
+0
+#################################################################################
