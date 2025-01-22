@@ -1,0 +1,250 @@
+LangChain
+-----------
+ |->Open-source framework ->build LLM applications
+
+ |->LLM - supports all types of llm model
+ 
+ 
+ |->LLM ->databases,APIs,filesystem
+
+ |->LangChain -->[ APIs ] ->llm
+		 <-------------->
+		
+ |->pipeline -> sequence of components 
+		----------------------
+		 |->inputProcess ->Query ->LLM ->Postprocess
+				   	 --------------------
+
+ |->Agents - get the data from data sources(DB,APIs)  
+
+ |->prompt -> prompt management 
+		->design,manage,optimize //prompt structure
+
+#################################################################################
+Load the data ->chunk ->embedding ->stores to vector ->vector_database ->fetch ->query ->llm ->prompt ->UI
+
+step 1. Data Ingestion
+	---------------
+	 |->Load the data from various sources
+		     ----
+			|->pdf,excel,text,log,url,json,csv,webscrape etc.,
+
+
+step 2: Split the data into small chunks
+
+step 3: Text Embedding 
+|
+step 4: Vector store (DB)
+|
+step 5: Save to local m/c
+|
+step 6: Retriever
+|
+step 7: Query 
+|
+step 8: llm - pipline
+|
+step 9: prompt
+|
+step 10: UI
+-----------------------------------------------------------------------------------
+from langchain_community.document_loaders import TextLoader
+loader = TextLoader('speech.txt')
+# here loader is userdefined labed -> TextLoader instance 
+
+docs = loader.load()
+
+print(docs[0])
+print(docs[1])
+
+"C:\\Users\\UserName\\filename.txt"
+
+from langchain_community.document_loaders import PyPDFLoader
+loader = PyPDFLoader('C:\\Users\\theeba\\attention.pdf')
+docs = loader.load()
+
+--------------------------------
+Load data from webpage
+|
+|->webloader - way-1 // WebBaseLoader(web_path=(URL,bs_kwargs=dict()))
+|
+|->webscrabing - way-2 // requests,bs4
+
+
+import requests
+r = requests.get('URL')
+if(r.status_code != 200):
+	print(f"{URL} download is failed")
+	exit()
+
+web_page = r.text
+
+print(type(web_page),len(web_page))
+		|
+		str
+----------------------------------------------
+import bs4
+
+soup_obj = bs4.BeautifulSoup(web_page) # constructor
+
+# To extract data from htmlTag
+#
+# 1st method -> soup_obj.<TagName> 
+
+print(soup_obj.p) 
+print(soup_obj.h1)
+print(soup_obj.title)
+print(soup_obj.head)
+print(soup_obj.a)
+
+# 2nd method -> soup_obj.find(<TagName>) -> str
+#		soup_obj.find_all(<TagName>) -> [list of all tagValues]
+
+# <outerTageName attribute=instance ... K=V>
+#                -------------------------//dictionary {Key: Value}
+#
+##############################################################################
+
+msg="This is a test documentation details for sample data split into multiple values"
+
+splitter = CharacterTextSplitter(chunk_size=15,chunk_overlap=2,separator=" ")
+
+chunks = splitter.split_text(msg)
+chunks
+split - based on delimiter(any string - char,specialchar,space,word)
+|
+place it into chunk - refers the chunk size - n  
+---------------------			      
+	|-> splitted_data < n -> placed same order 
+	|
+	|-> splitted_data > n ->warining ->dynamic will adjust ..
+
+########################################################################################
+
+Data Transformation
+---------------------
+# step 1: load text data
+|
+from langchain_community.document_loaders import TextLoader
+loader = TextLoader("speech.txt")
+docs = loader.load()
+step 2: split data ->multiple chunks
+|
+# step 2 Text splitter
+|
+from langchain_text_splitters import CharacterTextSplitter
+CharacterTextSplitter(separator="\n\n",chunk_size=100,chunk_overlap=10).split_documents(docs)
+
+-----------------
+RecursiveCharacterTextSplit
+----------------------------
+msg="""This is a sample documents.
+it may contain multiple pages,sentences,numbers we need to
+split each data into multiple chunks"""
+
+RecursiveCharacterTextSplitter(chunk_size=10,chunk_overlap=2).split_text(msg)
+-------------------------------
+
+Task:
+|
+|->load pdfloader ->get complete pdf pages
+		    -----------------------
+			|->RecursiveCharacterTextSplitter -
+				|->split_documents
+
+
+from langchain_community.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+## Reading a pdf file
+loader = PyPDFLoader('attention.pdf')
+docs = loader.load()
+########################### Step 1
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500,chunk_overlap=50)
+final_docs = text_splitter.split_documents(docs)
+########################### Step 2
+print(len(final_docs))
+###################################################################################
+
+Chroma, FAISS  //Vector DataBase
+
+!pip install chromadb
+
+from langchain_community.vectorstores import Chroma 
+
+
+!pip install langchain_ollama
+
+
+!pip install faiss-cpu
+
+from langchain_community.vectorstores import FAISS
+
+
+from langchain_community.document_loaders import TextLoader
+
+from langchain_community.vectorstores import FAISS
+
+from langchain_ollama.embeddings import OllamaEmbeddings
+
+from langchain_text_splitters import CharacterTextSpliter
+
+
+
+
+Linux/mac os
+----------------
+|->Go to login path - cd {Enter}
+
+ vi .env{enter}
+
+ press 'i'  # insert mode
+
+OPENAI_API_KEY="sk-pA4A"
+
+LANGCHAIN_API_KEY="lsea5"
+LANGCHAIN_PROJECT="GenAI-Project"
+
+:wq
+---------------------------------
+|
+Win os
+------
+ |-> gitbash
+     |
+    vi .env{enter}
+
+ press 'i'  # insert mode
+
+OPENAI_API_KEY="sA4A"
+
+LANGCHAIN_API_KEY="lea5"
+LANGCHAIN_PROJECT="GenAI-Project"
+
+:wq
+-----------------------------------------------------------------------------
+
+
+from langchain_community.document_loaders import TextLoader
+loader = TextLoader('speech.txt')
+docs = loader.load()
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500,chunk_overlap=50)
+final_docs = text_splitter.split_documents(docs)
+
+# !pip install langchain_openai
+from langchain_openai import OpenAIEmbeddings
+embedding = OpenAIEmbeddings(model="text-embedding-3-small")
+
+#vector embedding and store to vector DB
+from langchain_community.vectorstores import Chroma
+db = Chroma.from_documents(final_docs,embedding)
+
+# Retrieve the results from vector DB and do the query
+query="what is easier way to connect node"
+
+retrieved_results = db.similarity_search(query)
+print(retrived_results)
+##################################################################################
+
