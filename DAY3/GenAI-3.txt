@@ -1,0 +1,141 @@
+Step 1: https://huggingface.co/
+|
+Step 2: Sign-In // create an account
+|
+Step 3: Create your own APIKey(token)
+			|
+			Go to settings ->Accesstoken ->newtoken
+				
+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
+
+|
+Step 4: Go to .env file directory
+|
+Step 5: vi .env {Enter}  # for windows user - use Git-bash shell
+	
+	HF_TOKEN="hf_G..Ee"
+	
+	:wq  <== save and exit
+--------------------------------------------------------
+!pip install langchain_huggingface
+
+from langchain_huggingface import HuggingFaceEmbeddings
+
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+//ignore warning
+
+print(embeddings)
+
+text = "Hello world"
+query_result = embeddings.embed_query(text) # Convert to vector
+print(query_result)
+print(len(query_result))
+# check particular sentence how many vectors
+###################################################
+
+stremlit - UI web Appln
+|
+|->ML ,DS
+|->load data frame 
+
+pip install streamlit
+
+
+#################################################################
+
+https://blog.streamlit.io/deep-learning-apps-for-image-processing-made-easy-a-step-by-step-guide/
+
+#################################################################
+https://groq.com/
+--------------------
+|
+Step 1: Sign-Up
+|
+Step 2: Click -> DevConsole  # new page
+|
+Step 3: Go to -> APIKeys
+|
+Step 4: create a newKey
+|
+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
+|
+Step 5: update GrQ API key -> .env file
+
+GROQ_API_KEY="gsk..oU5m"
+
+|
+Step 6: save and exit 
+|
+Step 7: jupyter /pythonIDE
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+gKey = os.getenv("GROQ_API_KEY") # gKey = "<paste>"
+|
+Step 8: !pip install langchain_groq
+|
+Step 9: from langchain_groq import ChatGroq
+|
+Step 10: ChatGroq(model="gemma2-9b-it",groq_api_key=gKey)
+---------------------------------------------------------------
+
+Chatbot Appln
+--------------
+ |->rule-based bot
+    |=>pre-defined rules - decision trees
+    |=>model based - NLP 
+
+ 
+ # Chatbot ->conversation 
+	   ->remember previous interactions
+		      ---------------------
+# agent ->build
+	  |----->human =>HumanMessage 
+	  |----->AI    =>AIMessage
+			...
+
+
+# memory - follow/remember previous query ->chain
+				|
+ history ----<------------------|
+		(chat-History) // runnable_session
+				   |->session - sessionID - chat //config
+
+
+d={}
+
+product <== pID - productName
+
+
+prodA-101	d['p101']='prodA' => {'p101':'prodA'}
+		|
+		d['p102']='prodB' => {'p101':'prodA','p102':'prodB'}
+		|
+		d['p103']='prodC' => {'p101':'prodA','p102':'prodB','p103':'prodC'}
+
+--------------------------------------
+step 11
+ |
+from langchain_groq import ChatGroq
+
+model = ChatGroq(model='gemma2-9b-it',groq_api_key=groqK)
+
+from langchain_core.messages import HumanMessage
+
+model.invoke([HumanMessage(content="Hello My name is karthik and im instructor")])
+
+
+
+store = {}
+|
+write user defined_function - args:sessionID
+		|
+		|-> test sessionID is present or Not 
+						  |->Add store[sessionID] = chatMessage
+		
+		    return store[sessionID]
+
+|
+########################################################################################
+
